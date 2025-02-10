@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   upgist:
     build: .
@@ -8,8 +6,10 @@ services:
     volumes:
       - ~/.ssh:/root/.ssh:ro  # Map SSH keys read-only
     environment:
-      - GIST_ID=${GIST_ID:-}  # Optional: Set to your gist ID if updating existing gist
-      - RUST_LOG=info
-    restart: unless-stopped
-    user: "1000:1000"  # Run as non-root user for security
-    init: true  # Proper signal handling
+      - GIST_URL=${GIST_URL:?GIST_URL is required}
+      - GITHUB_USERNAME=${GITHUB_USERNAME:?GITHUB_USERNAME is required}
+      - GIT_USER=${GIT_USER:-UpGist}
+      - GIT_EMAIL=${GIT_EMAIL:-upgist@local}
+      - GIT_COMMIT_MESSAGE=${GIT_COMMIT_MESSAGE:-Add files via UpGist}
+      - UPGIST_LOGGING=${UPGIST_LOGGING:-}
+    init: true
