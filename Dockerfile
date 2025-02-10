@@ -28,10 +28,6 @@ WORKDIR /app
 COPY --from=builder /app/upgist /usr/local/bin/
 COPY static /app/static
 
-# Copy and setup entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 EXPOSE 3000
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["upgist"]
