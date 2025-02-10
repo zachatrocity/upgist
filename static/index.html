@@ -7,10 +7,12 @@
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
         :root {
-            --primary-color: #2ecc71;
-            --hover-color: #27ae60;
-            --bg-color: #f5f6fa;
-            --text-color: #2c3e50;
+            --primary-color: #00ff9d;
+            --hover-color: #00cc7d;
+            --bg-color: #1a1b26;
+            --container-bg: #1f2937;
+            --text-color: #e2e8f0;
+            --border-color: #374151;
         }
 
         * {
@@ -20,7 +22,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
             background: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -32,10 +34,11 @@
         }
 
         .container {
-            background: white;
+            background: var(--container-bg);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
             width: 100%;
             max-width: 500px;
         }
@@ -47,17 +50,18 @@
         }
 
         .upload-zone {
-            border: 2px dashed #ddd;
+            border: 2px dashed var(--border-color);
             border-radius: 8px;
             padding: 2rem;
             text-align: center;
             margin-bottom: 1rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .upload-zone:has(input:focus) {
             border-color: var(--primary-color);
-            background: rgba(46, 204, 113, 0.05);
+            background: rgba(0, 255, 157, 0.1);
         }
 
         .upload-btn {
@@ -89,7 +93,7 @@
             display: none;
             width: 24px;
             height: 24px;
-            border: 3px solid #eee;
+            border: 3px solid var(--border-color);
             border-top-color: var(--primary-color);
             border-radius: 50%;
             margin: 1rem auto 0;
@@ -127,7 +131,7 @@
                        hx-swap="outerHTML">
             </div>
             <button type="submit" class="upload-btn">
-                Upload to Gist
+                > Upload to Gist
             </button>
             <div class="spinner"></div>
             <div class="status" id="status"></div>
