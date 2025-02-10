@@ -5,7 +5,9 @@ services:
       - "3000:3000"
     volumes:
       - ~/.ssh:/root/.ssh:ro  # Map SSH keys read-only
+      - $SSH_AUTH_SOCK:/ssh-agent # Forward SSH agent
     environment:
+      - SSH_AUTH_SOCK=/ssh-agent
       - GIST_URL=${GIST_URL:?GIST_URL is required}
       - GITHUB_USERNAME=${GITHUB_USERNAME:?GITHUB_USERNAME is required}
       - GIT_USER=${GIT_USER:-UpGist} #optional
