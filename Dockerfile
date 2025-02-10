@@ -20,7 +20,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o upgist
 FROM alpine:latest
 
 # Install git and ssh client for gist operations
-RUN apk add --no-cache git openssh-client
+RUN apk add --no-cache git openssh-client && \
+    mkdir -p /root/.ssh && \
+    ssh-keyscan github.com > /root/.ssh/known_hosts
 
 WORKDIR /app
 
