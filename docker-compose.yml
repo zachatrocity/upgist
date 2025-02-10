@@ -1,6 +1,6 @@
 services:
   upgist:
-    build: .
+    image: ghcr.io/zachatrocity/upgist:main
     ports:
       - "3000:3000"
     volumes:
@@ -8,8 +8,8 @@ services:
     environment:
       - GIST_URL=${GIST_URL:?GIST_URL is required}
       - GITHUB_USERNAME=${GITHUB_USERNAME:?GITHUB_USERNAME is required}
-      - GIT_USER=${GIT_USER:-UpGist}
-      - GIT_EMAIL=${GIT_EMAIL:-upgist@local}
-      - GIT_COMMIT_MESSAGE=${GIT_COMMIT_MESSAGE:-Add files via UpGist}
-      - UPGIST_LOGGING=${UPGIST_LOGGING:-}
+      - GIT_USER=${GIT_USER:-UpGist} #optional
+      - GIT_EMAIL=${GIT_EMAIL:-upgist@local} #optional
+      - GIT_COMMIT_MESSAGE=${GIT_COMMIT_MESSAGE:-Add files via UpGist} #optional
+      - UPGIST_LOGGING=${UPGIST_LOGGING:-} #optional
     init: true
