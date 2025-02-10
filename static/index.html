@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpGist - Simple Gist Uploader</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --hover-color: #27ae60;
+            --bg-color: #f5f6fa;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .upload-zone {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:has(input:focus) {
+            border-color: var(--primary-color);
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        .upload-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+
+        .upload-btn:hover {
+            background: var(--hover-color);
+        }
+
+        .upload-btn[disabled] {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            height: 4px;
+            width: 100%;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .status {
+            margin-top: 1rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .htmx-request .upload-btn {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .htmx-request .progress {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UpGist</h1>
+        <form hx-encoding="multipart/form-data" 
+              hx-post="/upload" 
+              hx-target="#status"
+              hx-indicator="#progress">
+            <div class="upload-zone">
+                <p>Select files to upload</p>
+                <input type="file" 
+                       name="file" 
+                       multiple
+                       hx-trigger="change"
+                       hx-swap="outerHTML">
+            </div>
+            <button type="submit" class="upload-btn">
+                Upload to Gist
+            </button>
+            <div class="progress" id="progress" style="display:none">
+                <div class="progress-bar" 
+                     hx-indicator
+                     _="on htmx:xhr:progress(loaded, total) set @style.width to (loaded/total)*100 + '%'">
+                </div>
+            </div>
+            <div class="status" id="status"></div>
+        </form>
+    </div>
+</body>
+</html>

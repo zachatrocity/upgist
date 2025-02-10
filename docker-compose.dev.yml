@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  upgist-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/upgist  # Mount source code for hot reloading
+      - target:/usr/src/upgist/target  # Cache compiled artifacts
+      - ~/.ssh:/root/.ssh:ro  # Map SSH keys read-only
+    environment:
+      - GIST_ID=${GIST_ID:-}
+      - RUST_LOG=debug  # More verbose logging for development
+    init: true
+
+volumes:
+  target:  # Persist build artifacts between runs

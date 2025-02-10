@@ -1,0 +1,24 @@
+FROM rust:alpine
+
+# Install development dependencies
+RUN apk add --no-cache \
+    musl-dev \
+    openssl-dev \
+    git \
+    cargo-watch
+
+WORKDIR /usr/src/upgist
+
+# Copy source code
+COPY . .
+
+# Build dependencies
+RUN cargo build
+
+# Install cargo-watch for hot reloading
+RUN cargo install cargo-watch
+
+EXPOSE 3000
+
+# Use cargo watch for development with hot reloading
+CMD ["cargo", "watch", "-x", "run"]

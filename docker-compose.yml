@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  upgist:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ~/.ssh:/root/.ssh:ro  # Map SSH keys read-only
+    environment:
+      - GIST_ID=${GIST_ID:-}  # Optional: Set to your gist ID if updating existing gist
+      - RUST_LOG=info
+    restart: unless-stopped
+    user: "1000:1000"  # Run as non-root user for security
+    init: true  # Proper signal handling
