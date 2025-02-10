@@ -81,20 +81,19 @@
             cursor: not-allowed;
         }
 
-        .progress {
-            height: 4px;
-            width: 100%;
-            background: #eee;
-            border-radius: 2px;
-            margin-top: 1rem;
-            overflow: hidden;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .progress-bar {
-            height: 100%;
-            background: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s ease;
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #eee;
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            margin: 1rem auto 0;
+            animation: spin 1s linear infinite;
         }
 
         .status {
@@ -108,7 +107,7 @@
             cursor: not-allowed;
         }
 
-        .htmx-request .progress {
+        .htmx-request .spinner {
             display: block;
         }
     </style>
@@ -118,8 +117,7 @@
         <h1>UpGist</h1>
         <form hx-encoding="multipart/form-data" 
               hx-post="/upload" 
-              hx-target="#status"
-              hx-indicator="#progress">
+              hx-target="#status">
             <div class="upload-zone">
                 <p>Select files to upload</p>
                 <input type="file" 
@@ -131,12 +129,7 @@
             <button type="submit" class="upload-btn">
                 Upload to Gist
             </button>
-            <div class="progress" id="progress" style="display:none">
-                <div class="progress-bar" 
-                     hx-indicator
-                     _="on htmx:xhr:progress(loaded, total) set @style.width to (loaded/total)*100 + '%'">
-                </div>
-            </div>
+            <div class="spinner"></div>
             <div class="status" id="status"></div>
         </form>
     </div>
