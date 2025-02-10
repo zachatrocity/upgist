@@ -29,5 +29,4 @@ COPY --from=builder /app/upgist /usr/local/bin/
 COPY static /app/static
 
 EXPOSE 3000
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["upgist"]
