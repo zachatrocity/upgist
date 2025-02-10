@@ -1,20 +1,19 @@
 # UpGist 📤
 
-Self-hosted Gist uploader with SSH auth. Built with Go + HTMX for maximum performance.
+Self-hosted GitHub Gist file uploader with SSH auth built with Go + HTMX.
 
 ## ✨ Features
 
-- 🚀 Ultra-lightweight (~15MB Docker image)
+- 🚀 Ultra-lightweight
 - 🔒 SSH key authentication
 - 📁 Multiple file uploads
-- ⚡️ Pure HTMX frontend, no JS
-- 🔄 Progress indicators
+- ⚡️ Pure HTMX frontend
 
 ## 🏃 Quick Start
 
 1. Create a new gist:
    - Go to https://gist.github.com/
-   - Create a new gist (can be empty)
+   - Create a new gist any name, description and initial file (gist requires at least one file)
    - Copy the SSH clone URL (e.g., `git@gist.github.com:abc123.git`)
    - Make sure your SSH key is added to GitHub
 
