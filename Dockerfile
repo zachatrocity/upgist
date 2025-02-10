@@ -28,5 +28,18 @@ WORKDIR /app
 COPY --from=builder /app/upgist /usr/local/bin/
 COPY static /app/static
 
+# Create entrypoint script to setup SSH agent
+RUN echo '#!/bin/sh\n\
+eval $(ssh-agent -s)\n\
+if [ -d "/root/.ssh" ]; then\n\
+  for key in /root/.ssh/id_*; do\n\
+    if [ -f "$key" ] && [ "${key%.pub}" = "$key" ]; then\n\
+      ssh-add "$key"\n\
+    fi\n\
+  done\n\
+fi\n\
+exec "$@"' > /entrypoint.sh && chmod +x /entrypoint.sh
+
 EXPOSE 3000
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["upgist"]
