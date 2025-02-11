@@ -1,5 +1,9 @@
 # UpGist 📤
 
+<p align="center">
+  <img src="https://gist.githubusercontent.com/zachatrocity/e0246929ef65bb738bcf7a74c42b1bbf/raw/86e098e82f2d30bc731bffe60d9e364ca4c4f60b/upgist.png" alt="upgist logo">
+</p>
+
 Self-hosted GitHub Gist file uploader with SSH auth built with Go + HTMX.
 
 ## ✨ Features
