@@ -17,10 +17,23 @@ Self-hosted GitHub Gist file uploader with SSH auth built with Go + HTMX.
    - Make sure your SSH key is added to GitHub and `gist.github.com` is in your `known_hosts` file.
      - `ssh-keyscan gist.github.com >> ~/.ssh/known_hosts`
 
-2. Configure environment:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your settings
+2. `docker-compose.yml`
+   ```docker
+   services:
+      upgist:
+         image: ghcr.io/zachatrocity/upgist:main
+         ports:
+            - "3000:3000"
+         volumes:
+            # Mount SSH keys for container's internal SSH agent
+            # Note: gist.github.com needs to be in known_hosts
+            - ~/.ssh:/root/.ssh:ro
+         environment:
+            - GIST_URL=change_me
+            - GITHUB_USERNAME=change_me
+            # see .env.example for all vars
+    init: true
+
    ```
 
 3. Run UpGist:
