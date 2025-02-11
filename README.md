@@ -12,10 +12,10 @@ Self-hosted GitHub Gist file uploader with SSH auth built with Go + HTMX.
 ## 🏃 Quick Start
 
 1. Create a new gist:
-   - Go to https://gist.github.com/
-   - Create a new gist any name, description and initial file (gist requires at least one file)
+   - Go to https://gist.github.com/ and make a new gist
    - Copy the SSH clone URL (e.g., `git@gist.github.com:abc123.git`)
-   - Make sure your SSH key is added to GitHub
+   - Make sure your SSH key is added to GitHub and `gist.github.com` is in your `known_hosts` file.
+     - `ssh-keyscan gist.github.com >> ~/.ssh/known_hosts`
 
 2. Configure environment:
    ```bash

@@ -5,6 +5,7 @@ services:
       - "3000:3000"
     volumes:
       # Mount SSH keys for container's internal SSH agent
+      # Note: gist.github.com needs to be in known_hosts
       - ~/.ssh:/root/.ssh:ro
     environment:
       - GIST_URL=${GIST_URL:?GIST_URL is required}
