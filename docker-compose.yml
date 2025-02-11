@@ -1,5 +1,6 @@
 services:
   upgist:
+    # build: . # for development
     image: ghcr.io/zachatrocity/upgist:main
     ports:
       - "3000:3000"
