@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UpGist - Simple Gist Uploader</title>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        // 🌘 CSS Scope Inline (https://github.com/gnat/css-scope-inline)
+        window.cssScopeCount ??= 1 // Let extra copies share the scope count.
+        window.cssScope ??= new MutationObserver(mutations => { // Allow 1 observer.
+            document?.body?.querySelectorAll('style:not([ready])').forEach(node => { // Faster than walking MutationObserver results when recieving subtree (DOM swap, htmx, ajax, jquery).
+                var scope = 'me__'+(window.cssScopeCount++) // Ready. Make unique scope, example: .me__1234
+                node.parentNode.classList.add(scope)
+                node.textContent = node.textContent
+                .replace(/(?:^|\.|(\s|[^a-zA-Z0-9\-\_]))(me|this|self)(?![a-zA-Z])/g, '$1.'+scope) // Can use: me this self
+                .replace(/((@keyframes|animation:|animation-name:)[^{};]*)\.me__/g, '$1me__') // Optional. Removes need to escape names, ex: "\.me"
+                .replace(/(?:@media)\s(xs-|sm-|md-|lg-|xl-|sm|md|lg|xl|xx)/g, // Optional. Responsive design. Mobile First (above breakpoint): 🟢 None sm md lg xl xx 🏁  Desktop First (below breakpoint): 🏁 xs- sm- md- lg- xl- None 🟢 *- matches must be first!
+                    (match, part1) => { return '@media '+({'sm':'(min-width: 640px)','md':'(min-width: 768px)', 'lg':'(min-width: 1024px)', 'xl':'(min-width: 1280px)', 'xx':'(min-width: 1536px)', 'xs-':'(max-width: 639px)', 'sm-':'(max-width: 767px)', 'md-':'(max-width: 1023px)', 'lg-':'(max-width: 1279px)', 'xl-':'(max-width: 1535px)'}[part1]) }
+                )
+                node.setAttribute('ready', '')
+            })
+        }).observe(document.documentElement, {childList: true, subtree: true})
+    </script>
     <style>
         :root {
             --primary-color: #00ff9d;
@@ -33,97 +50,6 @@
             min-height: 100vh;
         }
 
-        .container {
-            background: var(--container-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            width: 100%;
-            max-width: 600px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: var(--text-color);
-        }
-
-        .upload-zone {
-            border: 2px dashed var(--border-color);
-            border-radius: 8px;
-            padding: 2.5rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            transition: all 0.2s ease;
-            background: rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
-
-        .upload-zone:hover {
-            border-color: var(--primary-color);
-            background: rgba(0, 255, 157, 0.05);
-        }
-
-        .upload-zone:has(input:focus) {
-            border-color: var(--primary-color);
-            background: rgba(0, 255, 157, 0.1);
-        }
-
-        .upload-zone p {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-
-        input[type="file"] {
-            font-family: inherit;
-            font-size: 0.95rem;
-            color: var(--text-color);
-            opacity: 0.8;
-            cursor: pointer;
-        }
-
-        input[type="file"]::file-selector-button {
-            font-family: inherit;
-            background: var(--container-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 0.5rem 1rem;
-            margin-right: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        input[type="file"]::file-selector-button:hover {
-            background: var(--border-color);
-        }
-
-        .upload-btn {
-            background: var(--primary-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .upload-btn:hover {
-            background: var(--hover-color);
-        }
-
-        .upload-btn[disabled] {
-            background: #bdc3c7;
-            cursor: not-allowed;
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -138,7 +64,9 @@
             margin: 1rem auto 0;
             animation: spin 1s linear infinite;
         }
-
+    </style>
+    <style>
+        /* htmx outputs */
         .status {
             margin-top: 1.5rem;
             font-size: 0.95rem;
@@ -157,20 +85,119 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>UpGist</h1>
+    <div>
+        <style>
+            me {
+                background: var(--container-bg);
+                padding: 2rem;
+                border-radius: 12px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+                border: 1px solid var(--border-color);
+                width: 100%;
+                max-width: 600px;
+            }
+        </style>
+        <h1>
+            <style>
+                me {
+                    text-align: center;
+                    margin-bottom: 1.5rem;
+                    color: var(--text-color);
+                }
+            </style>
+            UpGist
+        </h1>
         <form hx-encoding="multipart/form-data" 
               hx-post="/upload" 
               hx-target="#status">
             <div class="upload-zone">
+                <style>
+                    me {
+                        border: 2px dashed var(--border-color);
+                        border-radius: 8px;
+                        padding: 2.5rem;
+                        text-align: center;
+                        margin-bottom: 1.5rem;
+                        transition: all 0.2s ease;
+                        background: rgba(0, 0, 0, 0.2);
+                        cursor: pointer;
+
+                        &:hover { border-color: var(--primary-color); background: rgba(0, 255, 157, 0.05); }
+
+                        &:has(input:focus) { border-color: var(--primary-color); background: rgba(0, 255, 157, 0.1); }
+            
+                        p { font-size: 1.1rem; margin-bottom: 0.5rem; opacity: 0.9; }
+                    }
+                </style>
                 <p>Select files to upload</p>
-                <input type="file" 
+                <div class="file-wrapper">
+                    <style>
+                        me {
+                            max-width: 100%;
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        input[type="file"] {
+                            font-family: inherit;
+                            font-size: 0.95rem;
+                            color: var(--text-color);
+                            opacity: 0.8;
+                            cursor: pointer;
+                            max-width: 400px;
+                        }
+
+                        input[type="file"]::file-selector-button {
+                            font-family: inherit;
+                            background: var(--container-bg);
+                            color: var(--text-color);
+                            border: 1px solid var(--border-color);
+                            border-radius: 4px;
+                            padding: 0.5rem 1rem;
+                            margin-right: 1rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        }
+
+                        input[type="file"]::file-selector-button:hover {
+                            background: var(--border-color);
+                        } 
+                    </style>
+                    <input type="file" 
                        name="file" 
                        multiple
                        hx-trigger="change"
                        hx-swap="outerHTML">
+                </div>
             </div>
             <button type="submit" class="upload-btn">
+                <style>
+                    me {
+                        background: var(--primary-color);
+                        color: var(--bg-color);
+                        border: none;
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        width: 100%;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+
+                        &:hover {
+                            background: var(--hover-color);
+                        }
+
+                        &[disabled] {
+                            background: #bdc3c7;
+                            cursor: not-allowed;
+                        }
+                    }
+                </style>
                 Upload to Gist
             </button>
             <div class="spinner"></div>
