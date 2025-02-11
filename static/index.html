@@ -40,7 +40,7 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
         }
 
         h1 {
@@ -52,11 +52,17 @@
         .upload-zone {
             border: 2px dashed var(--border-color);
             border-radius: 8px;
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             transition: all 0.2s ease;
             background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 255, 157, 0.05);
         }
 
         .upload-zone:has(input:focus) {
@@ -64,16 +70,49 @@
             background: rgba(0, 255, 157, 0.1);
         }
 
+        .upload-zone p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        input[type="file"] {
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            font-family: inherit;
+            background: var(--container-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--border-color);
+        }
+
         .upload-btn {
             background: var(--primary-color);
-            color: white;
+            color: var(--bg-color);
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 6px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
             width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .upload-btn:hover {
@@ -101,7 +140,8 @@
         }
 
         .status {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
             text-align: center;
             color: var(--text-color);
         }
@@ -131,7 +171,7 @@
                        hx-swap="outerHTML">
             </div>
             <button type="submit" class="upload-btn">
-                > Upload to Gist
+                Upload to Gist
             </button>
             <div class="spinner"></div>
             <div class="status" id="status"></div>
