@@ -167,7 +167,9 @@
                     </style>
                     <input type="file" 
                        name="file" 
+                       id="fileUpload"
                        multiple
+                       hx-on::before-request="document.querySelector('#fileUpload').value=''"
                        hx-trigger="change"
                        hx-swap="outerHTML">
                 </div>
