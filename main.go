@@ -132,7 +132,12 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 	gistID = strings.TrimSuffix(gistID, ".git")
 
 	response := fmt.Sprintf(`<div class="success">
-		Files uploaded successfully! <a href="%s" target="_blank">View Gist</a><br><br>
+			<style>
+				me a{
+					color: var(--primary-color);
+				}
+			</style>
+		Files uploaded successfully!<br><a href="%s" target="_blank">View Gist</a><br><br>
 		Direct links:<br>`, gistWebURL)
 
 	for filename, hash := range fileHashes {
