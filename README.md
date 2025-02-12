@@ -12,6 +12,7 @@ Self-hosted GitHub Gist file uploader with SSH auth built with Go + HTMX.
 - 🔒 SSH key authentication
 - 📁 Multiple file uploads
 - ⚡️ Pure HTMX frontend
+- 🌘 css-scope-inline
 
 ## 🏃 Quick Start
 
